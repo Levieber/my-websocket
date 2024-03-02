@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Websocket Client</title>
+</head>
+
+<body>
+  <h1>Implementing the Websocket protocol in Node.js only with built-in modules</h1>
+  <p>Messages:</p>
+  <output data-id="messages"></output>
+  <script>
+    const messages = document.querySelector("[data-id='messages']")
+
+    const socket = new WebSocket("ws://localhost:3000")
+
+    socket.onopen = (event) => {
+      console.log("Connected to the server")
+      const id = Math.floor(Math.random() * 1000)
+
+      const data = JSON.stringify({
+        id,
+        name: "Levi Eber",
+        message: "Hello, Websocket!",
+        address: {
+          street: "Ziriguidum",
+          number: id * 20
+        },
+        hobbies: ["coding", "animes", "games"],
+        at: new Date().toISOString(),
+      })
+
+      const intervalId = setInterval(() => {
+        socket.send(data)
+      }, 1000)
+
+      setTimeout(() => {
+        clearInterval(intervalId)
+      }, 5000)
+    }
+
+    socket.onmessage = (message) => {
+      const data = JSON.parse(message.data)
+      messages.innerHTML += `<p>${data.message.name} said "${data.message.message}" at ${new Date(data.at).toLocaleString("en-US")}</p>`;
+    }
+
+    socket.onerror = (error) => {
+      console.log("Error:", error)
+    }
+
+    socket.onclose = (event) => {
+      console.log("Disconnected from the server")
+    }
+  </script>
+</body>
+
+</html>

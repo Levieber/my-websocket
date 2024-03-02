@@ -1,0 +1,14 @@
+{
+  "name": "my-websocket",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "./src/server.js",
+  "scripts": {
+    "dev": "node --watch src/server.js"
+  },
+  "author": "Levi Eber",
+  "license": "ISC",
+  "engines": {
+    "node": "v20.11.1"
+  }
+}
